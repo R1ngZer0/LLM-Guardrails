@@ -1,0 +1,233 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    /* Hide horizontal scrollbar */
+    overflow-x: hidden;
+}
+
+.chat-container {
+    display: flex;
+    height: 100%;
+    /* Hide horizontal scrollbar */
+    overflow-x: hidden;
+}
+
+.header {
+    background-color: #1a1a1a;
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
+
+.top-bar {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    right: 0; 
+    height: 100px;
+    padding: 10px;
+    background-color: #e8794e;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.logo {
+    position: relative;
+    left: -10px;
+    top: -13px;
+    height: 60px; 
+    width: auto;
+    z-index: 15;
+}
+
+.app-title {
+    /*Center the title text horizontally centered relative to the messages area */
+    position: relative;
+    top: -15px;
+    left: 0px;
+    font-size: 60px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: white;
+    font-weight:lighter;
+    text-shadow: 0px 2px 1px #1a1a1a;
+}
+
+.app-sub-title {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    text-align: center;
+    font-size: 33px;
+    font-weight: bold;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: #fbede2;
+    font-weight:normal;
+    text-shadow: 0px 2px 1px #1a1a1a;
+    background-color: #1a1a1a;
+    padding-top: 63px;
+    padding-bottom: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(255, 255, 255, 255);
+}
+
+.top-bar h3 {
+    visibility: hidden;
+    font-size: 20px;
+    color: lightgrey;
+    text-shadow: 0px 2px 1px #1a1a1a;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 8px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(255, 255, 255, 255);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.chat-area {
+    margin-top: 120px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffd4b4;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #1a1a1a;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.message {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fbede2;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.message.visible {
+    opacity: 1;
+}
+
+.spinner {
+    display: none; /* Keep the spinner hidden by default */
+    margin: auto; /* Center the spinner horizontally within its container */
+}
+
+.placeholder {
+    display: flex; /* Use flexbox to center the spinner */
+    justify-content: center; /* Center spinner horizontally */
+    align-items: center; /* Center spinner vertically */
+    min-height: 35px; /* Minimum height to contain the spinner without overlap */
+}
+
+.spinner::before {
+    content: '';
+    box-sizing: border-box;
+    display: block; /* Ensure the spinner is treated as a block-level element */
+    width: 30px; /* Adjusted width for a more standard spinner size */
+    height: 30px; /* Adjusted height to match the width for a perfect circle */
+    border-radius: 50%;
+    border: 4px solid black; /* Lighter border color for spinner */
+    border-top-color: #e8794e; /* Maintain the top border color for visibility */
+    animation: spin 1s linear infinite; /* Ensure the animation is correctly applied */
+}
+
+.spinner.show {
+    display: block; /* Ensure the spinner is displayed as a block element when visible */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.chat-input {
+    display: flex;
+    height: 50px;
+    min-height: 50px;
+    padding: 10px;
+    background-color: #e8794e;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.6);
+    z-index: 10;
+}
+
+.chat-input textarea {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 16px;
+    font-family: Arial, sans-serif; /* Ensure font family consistency */
+    color: black; /* Default text color, can be adjusted as needed */
+    white-space: pre-wrap; /* Allows text to wrap */
+    overflow-y: auto; /* Show vertical scrollbar when content overflows */
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none; /* Disable resizing */
+    background-color: #f8f8f8; /* Slightly off-white background, if desired */
+}
+
+.chat-input textarea::placeholder {
+    color: #aaa; /* Subdued color for placeholder text */
+    font-style: italic; /* Optionally style the placeholder text */
+}
+
+.chat-input button {
+    padding: 10px 20px;
+    background-color: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+}
+
+.chat-input button img {
+    height: 30px;
+    /* Make the button image white */
+    filter: invert(1);
+    width: auto;
+}
+
+.chat-input button:hover {
+    background-color: #1a1a1a;
+    border: 2px solid white;
+    padding: 8px 18px;
+}
+
+/* Code rendered in the chat area */
+code {
+    color: darkblue;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Courier New', Courier, monospace;
+    display: inline-block;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}

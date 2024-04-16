@@ -1,0 +1,3 @@
+invalid_prompt: Use this function when the prompt violates the given criteria.
+general_message: Use this function when the prompt does not violate the given criteria.
+

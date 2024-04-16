@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chat App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+
+    function scrollToBottom() {
+        const chatMessages = document.querySelector('.chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function addMessage() {
+        const message = document.createElement('div');
+        message.classList.add('message');
+        message.textContent = 'New message...';
+        convertMarkdownToHTML(message); // Convert the message to HTML
+        document.querySelector('.chat-messages').appendChild(message);
+        scrollToBottom(); 
+    }
+
+</script>
+<body>
+    <div class="chat-container">
+        <div class="top-bar">
+            <div class="app-sub-title">My Chat App with Guardrails</div>
+            <div class="app-title">Mastering A.I. for Cybersecurity</div>
+        </div>
+        <div class="chat-area">
+            <div class="chat-messages">
+                <!-- Chat messages will be appended here. -->
+            </div>
+            <div class="chat-input">
+                <textarea placeholder="Enter your chat message..."></textarea>
+                <button id="sendButton"><img src="submit-icon.png" alt="Send"></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script defer>
+    function markdownToHTML(markdownText) {
+        return marked.parse(markdownText);
+    }
+
+    function scrollToBottom() {
+        const chatMessages = document.querySelector('.chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const sendButton = document.getElementById('sendButton');
+        const messageInput = document.querySelector('.chat-input textarea');
+        const chatMessages = document.querySelector('.chat-messages');
+
+        function scrollToBottom() {
+            const chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.textContent = messageText;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
+                messageInput.value = ''; // Clear the input field
+
+                // Create a placeholder for the response with a spinner
+                const placeholderDiv = document.createElement('div');
+                placeholderDiv.classList.add('message', 'placeholder');
+                placeholderDiv.innerHTML = '<div class="spinner show"></div>'; // Add spinner
+                chatMessages.appendChild(placeholderDiv);
+                scrollToBottom(); // Scroll to the bottom after adding the placeholder
+
+                // Get the currently selected conversation
+                // const selectedConversation = document.querySelector('.conversation.active').textContent;
+                const requestData = { selected_conversation: null, user_message: messageText };
+
+                // Send the data to the server for analysis
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        // Replace the placeholder with the analysis result
+                        placeholderDiv.classList.remove('placeholder');
+                        placeholderDiv.innerHTML = data
+                        placeholderDiv.innerHTML = markdownToHTML(data); // Convert the response to HTML
+                        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
+                    } else {
+                        console.error('No result in response:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    placeholderDiv.classList.remove('placeholder');
+                    placeholderDiv.innerHTML = error;
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+            }
+        }
+
+        sendButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent form submission if it's inside a form
+            sendMessage();
+        });
+
+        messageInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault(); // Prevent the default action to stop from adding a new line
+                sendMessage();
+            }
+        });
+    });
+
+</script>
+
